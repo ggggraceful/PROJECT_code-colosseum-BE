@@ -2,9 +2,6 @@ package com.sparta.codecolosseumbackend.service;
 
 import com.sparta.codecolosseumbackend.dto.request.CommentRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
-import com.sparta.codecolosseumbackend.entity.Comment;
-import com.sparta.codecolosseumbackend.entity.Member;
-import com.sparta.codecolosseumbackend.entity.Problem;
 import com.sparta.codecolosseumbackend.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +20,13 @@ public class CommentService {
 
 	// comment 작성하기
 	@Transactional
-	public ResponseDto<?> createComment(CommentRequestDto commentRequestDto, HttpServletRequest request) {
+	public ResponseDto<?> createComment(Long problemId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
+		return null;
+	}
+
+	// comment 불러오기(상세조회)
+	@Transactional
+	public ResponseDto<?> getComment(Long problemId) {
 		return null;
 	}
 }
