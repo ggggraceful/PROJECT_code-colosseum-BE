@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CommentResponseDto {
 
 	private Long id;
