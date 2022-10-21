@@ -16,8 +16,8 @@ public class CommentController {
 
 	// comment 작성하기
 	@PostMapping("/api/auth/comment/{problemId}")
-	public ResponseDto<?> createComment(@PathVariable Long problemId, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
-		return commentService.createComment(problemId,commentRequestDto, request);
+	public ResponseDto<?> createComment(@PathVariable Long problemId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request){
+		return commentService.createComment(problemId, requestDto, request);
 	}
 
 
@@ -26,6 +26,14 @@ public class CommentController {
 	public ResponseDto<?> getComment(@PathVariable Long problemId){
 		return commentService.getComment(problemId);
 	}
+
+
+	// comment 수정하기
+	@PutMapping("/api/auth/comment/{commentId}")
+	public ResponseDto<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request){
+		return commentService.updateComment(commentId, requestDto, request);
+	}
+
 
 
 }
