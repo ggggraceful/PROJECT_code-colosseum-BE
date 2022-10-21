@@ -35,4 +35,10 @@ public class CommentService {
 	public ResponseDto<?> updateComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
 		return null;
 	}
+
+
+	// comment 삭제하기
+	public ResponseDto<?> deleteComment(Long commentId, HttpServletRequest request) {
+		return null;
+	}
 }
