@@ -1,5 +1,6 @@
 package com.sparta.codecolosseumbackend.entity;
 
+import com.sparta.codecolosseumbackend.dto.request.ProblemRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,4 +31,30 @@ public class Problem extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    //    @ManyToOne
+//    @JoinColumn(name = "member_id")
+//    private Member member;
+
+    //    public Problem from (Member member, ProblemRequestDto requestDto) {
+//        return Problem.builder()
+//                .title(requestDto.getTitle())
+//                .content(requestDto.getContent())
+//                .imgUrl(requestDto.getImgUrl())
+//                .member(member)
+//                .build();
+//    }
+    public Problem(Member member, ProblemRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.imgUrl = requestDto.getImgUrl();
+//        this.member = member;
+    }
+
+    // 업데이트
+    public void updateProblem(ProblemRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.imgUrl = requestDto.getImgUrl();
+    }
 }
