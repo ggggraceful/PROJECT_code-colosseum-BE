@@ -1,7 +1,7 @@
 package com.sparta.codecolosseumbackend.service;
 
 import com.sparta.codecolosseumbackend.dto.TokenDto;
-import com.sparta.codecolosseumbackend.dto.request.LoginRequestDto;
+import com.sparta.codecolosseumbackend.dto.request.LogInRequestDto;
 import com.sparta.codecolosseumbackend.dto.request.MemberRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.MemberResponseDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
@@ -73,7 +73,7 @@ public class MemberService {
     }
 
     //로그인
-    public ResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
+    public ResponseDto<?> login(LogInRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
 
         Member member = isPresentMember(loginRequestDto.getUsername());
 //

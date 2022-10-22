@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -71,5 +72,11 @@ public class ProblemService {
         List<Likes> likes = likesRepository.findAllByProblem(problem);
         likesRepository.deleteAll(likes);
         return ResponseDto.success("삭제 완료!");
+    }
+
+    // 유효성 검사 - 존재하는 문제인지 확인
+    public Problem isPresentProblem(Long id){
+        Optional<Problem> optionalPost = problemRepository.findById(id);
+        return optionalPost.orElse(null);
     }
 }

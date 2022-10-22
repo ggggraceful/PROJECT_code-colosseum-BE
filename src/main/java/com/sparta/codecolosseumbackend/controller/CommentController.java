@@ -20,13 +20,11 @@ public class CommentController {
 		return commentService.createComment(problemId, requestDto, request);
 	}
 
-
 	// comment 불러오기(상세조회)
 	@GetMapping("/apu/auth/comment/{problemId}")
 	public ResponseDto<?> getComment(@PathVariable Long problemId) {
 		return commentService.getComment(problemId);
 	}
-
 
 	// comment 수정하기
 	@PutMapping("/api/auth/comment/{commentId}")
@@ -34,12 +32,10 @@ public class CommentController {
 		return commentService.updateComment(commentId, requestDto, request);
 	}
 
-
 	// comment 삭제하기
 	@DeleteMapping("/api/auth/comment/{commentId}")
 	public ResponseDto<?> deleteComment(@PathVariable Long commentId, HttpServletRequest request){
 		return commentService.deleteComment(commentId, request);
 	}
-
 
 }

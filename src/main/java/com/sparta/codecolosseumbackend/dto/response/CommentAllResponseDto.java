@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommentResponseDto {
+@NoArgsConstructor
+public class CommentAllResponseDto {
 
 	private Long commentId;
 	private String comment;
