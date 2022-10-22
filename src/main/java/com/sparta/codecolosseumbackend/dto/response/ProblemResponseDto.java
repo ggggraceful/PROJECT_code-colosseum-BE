@@ -22,17 +22,17 @@ public class ProblemResponseDto {
 
         private String username;
 
-        private String createdAt;
+        private LocalDateTime createdAt;
 
-        private String modifiedAt;
+        private LocalDateTime modifiedAt;
 
         private Long likeNum;
 
         public ProblemList(Problem problem, Long likeNum) {
             this.title = problem.getTitle();
 //            this.username = problem.getMember().getUsername();
-            this.createdAt = String.valueOf(problem.getCreatedAt());
-            this.modifiedAt = String.valueOf(problem.getModifiedAt());
+            this.createdAt = problem.getCreatedAt();
+            this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
         }
     }
