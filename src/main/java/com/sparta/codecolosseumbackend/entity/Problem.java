@@ -32,10 +32,6 @@ public class Problem extends Timestamped {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //    @ManyToOne
-//    @JoinColumn(name = "member_id")
-//    private Member member;
-
     //    public Problem from (Member member, ProblemRequestDto requestDto) {
 //        return Problem.builder()
 //                .title(requestDto.getTitle())
@@ -48,7 +44,7 @@ public class Problem extends Timestamped {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.imgUrl = requestDto.getImgUrl();
-//        this.member = member;
+        this.member = member;
     }
 
     // 업데이트

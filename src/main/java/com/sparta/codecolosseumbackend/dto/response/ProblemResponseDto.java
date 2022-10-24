@@ -30,7 +30,7 @@ public class ProblemResponseDto {
 
         public ProblemList(Problem problem, Long likeNum) {
             this.title = problem.getTitle();
-//            this.username = problem.getMember().getUsername();
+            this.username = problem.getMember().getUsername();
             this.createdAt = problem.getCreatedAt();
             this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
@@ -60,7 +60,7 @@ public class ProblemResponseDto {
             this.title = problem.getTitle();
             this.content = problem.getContent();
             this.imgUrl = problem.getImgUrl();
-//            this.username = problem.getMember().getUsername();
+            this.username = problem.getMember().getUsername();
             this.createdAt = problem.getCreatedAt();
             this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
