@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface ProblemRepository extends JpaRepository<Problem, Long> {
     List<Problem> findAllByOrderByModifiedAtDesc();
-
     List<Problem> findAllByOrderByLikeNumDesc();
 }

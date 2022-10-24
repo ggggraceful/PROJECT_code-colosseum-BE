@@ -1,11 +1,14 @@
 package com.sparta.codecolosseumbackend.service;
 
 import com.sparta.codecolosseumbackend.dto.request.ProblemRequestDto;
+import com.sparta.codecolosseumbackend.dto.response.CommentResponseDto;
 import com.sparta.codecolosseumbackend.dto.response.ProblemResponseDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
+import com.sparta.codecolosseumbackend.entity.Comment;
 import com.sparta.codecolosseumbackend.entity.Likes;
 import com.sparta.codecolosseumbackend.entity.Member;
 import com.sparta.codecolosseumbackend.entity.Problem;
+import com.sparta.codecolosseumbackend.repository.CommentRepository;
 import com.sparta.codecolosseumbackend.repository.LikesRepository;
 import com.sparta.codecolosseumbackend.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,7 @@ import java.util.Optional;
 public class ProblemService {
     private final ProblemRepository problemRepository;
     private final LikesRepository likesRepository;
+    private final CommentRepository commentRepository;
 
     // 글 작성
     public ResponseDto<?> createProblem(Member member, ProblemRequestDto requestDto) {
@@ -43,7 +46,6 @@ public class ProblemService {
         List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
         for (Problem problem : problems) {
             Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
-//            Long commentNum = (long) commentRepository.findAllByProblem(problem).size();
             problemLists.add(new ProblemResponseDto.ProblemList(problem, likeNum));
         }
         return ResponseDto.success(problemLists);
@@ -65,7 +67,13 @@ public class ProblemService {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
         Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
-        ProblemResponseDto.ProblemDetail problemDetail = new ProblemResponseDto.ProblemDetail(problem, likeNum);
+        // 글의 comment 모두 가져오기
+        List<Comment> commentList = commentRepository.findAllByProblem(problem);
+        List<CommentResponseDto> comments = new ArrayList<>();
+        for (Comment comment: commentList) {
+            comments.add(new CommentResponseDto(comment));
+        }
+        ProblemResponseDto.ProblemDetail problemDetail = new ProblemResponseDto.ProblemDetail(problem, likeNum, comments);
         return ResponseDto.success(problemDetail);
     }
 
