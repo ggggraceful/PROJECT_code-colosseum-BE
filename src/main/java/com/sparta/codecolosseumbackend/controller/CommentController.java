@@ -18,14 +18,14 @@ public class CommentController {
 
 	// comment 작성하기
 	@PostMapping("/api/auth/comment/{problemId}")
-	public ResponseDto<?> createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
-		return commentService.createComment(id, requestDto, request);
+	public ResponseDto<?> createComment(@PathVariable Long problemId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+		return commentService.createComment(problemId, requestDto, request);
 	}
 
 	// comment 불러오기(한문제의 comment 전부)
 	@GetMapping("/api/auth/comment/{problemId}")
-	public ResponseDto<?> getComment(@PathVariable Long id) {
-		return commentService.getComment(id);
+	public ResponseDto<?> getComment(@PathVariable Long problemId) {
+		return commentService.getComment(problemId);
 	}
 
 	// comment 수정하기
