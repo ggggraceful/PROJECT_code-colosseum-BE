@@ -17,10 +17,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -48,7 +46,6 @@ public class ProblemService {
         List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
         for (Problem problem : problems) {
             Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
-//            Long commentNum = (long) commentRepository.findAllByProblem(problem).size();
             problemLists.add(new ProblemResponseDto.ProblemList(problem, likeNum));
         }
         return ResponseDto.success(problemLists);

@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LikesRepository extends JpaRepository<Likes, Long> {
-    //    List<Likes> findAllByMember(Member account);
     List<Likes> findAllByProblem(Problem problem);
-
     Optional<Likes> findAllByProblemAndMember(Problem problem, Member member);
 }
