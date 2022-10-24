@@ -61,7 +61,9 @@ public class ProblemResponseDto {
 
         private Long likeNum;
 
-        public ProblemDetail(Problem problem, Long likeNum) {
+        private List<CommentResponseDto> comments;
+
+        public ProblemDetail(Problem problem, Long likeNum, List<CommentResponseDto> commentList) {
             this.title = problem.getTitle();
             this.content = problem.getContent();
             this.imgUrl = problem.getImgUrl();
@@ -70,6 +72,7 @@ public class ProblemResponseDto {
             this.createdAt = problem.getCreatedAt();
             this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
+            this.comments = commentList;
         }
     }
 }
