@@ -73,7 +73,7 @@ public class CommentService {
 		}
 		Problem problem = problemService.isPresentProblem(problemId);
 		if (null == problem) {
-			return ResponseDto.fail(NOT_FOUND, "존재하지 않는 게시글 id 입니다.");
+			return ResponseDto.fail(NOT_FOUND, "존재하지 않는 게시글입니다.");
 		}
 
 		Comment comment = Comment.builder()
@@ -97,9 +97,15 @@ public class CommentService {
 	// comment 불러오기
 	@Transactional(readOnly = true)
 	public ResponseDto<?> getComment(Long problemId) {
+
+		Problem problem = problemService.isPresentProblem(problemId);
+		if (null == problem) {
+			return ResponseDto.fail(NOT_FOUND, "존재하지 않는 게시글입니다.");
+		}
+
 		problemRepository.findById(problemId);
 		List<CommentResponseDto> commentAllList = new ArrayList<>();
-		List<Comment> commentList = commentRepository.findAllById(problemId);
+		List<Comment> commentList = commentRepository.findAllByProblemId(problemId);
 		for(Comment comment: commentList){
 			commentAllList.add(
 					CommentResponseDto.builder()
@@ -111,7 +117,7 @@ public class CommentService {
 							.build()
 			);
 		}
-		return ResponseDto.success(commentList);
+		return ResponseDto.success(commentAllList);
 	}
 
 
