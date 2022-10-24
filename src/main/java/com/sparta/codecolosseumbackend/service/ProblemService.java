@@ -108,6 +108,9 @@ public class ProblemService {
         // 해당 글의 좋아요도 삭제
         List<Likes> likes = likesRepository.findAllByProblem(problem);
         likesRepository.deleteAll(likes);
+        // 해당 글의 댓글도 삭제
+        List<Comment> comment = commentRepository.findAllByProblem(problem);
+        commentRepository.deleteAll(comment);
         return ResponseDto.success("삭제 완료!");
     }
 
