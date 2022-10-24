@@ -28,6 +28,13 @@ public class ProblemController {
         return problemService.findAllProblems();
     }
 
+    // 전체 목록 좋아요순 조회
+    @GetMapping("/problems/best")
+    public ResponseDto getAllProblemsByLikes() {
+        return problemService.findAllProblemsByLikes();
+    }
+
+
     // 글 하나 조회
     @GetMapping("problem/{problemId}")
     public ResponseDto getOneProblem(@PathVariable Long problemId) {
