@@ -2,6 +2,7 @@ package com.sparta.codecolosseumbackend.service;
 
 import com.sparta.codecolosseumbackend.dto.request.CommentRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.CommentResponseDto;
+import com.sparta.codecolosseumbackend.dto.response.ProblemResponseDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
 import com.sparta.codecolosseumbackend.entity.Comment;
 import com.sparta.codecolosseumbackend.entity.Member;
@@ -70,7 +71,7 @@ public class CommentService {
 		if(commentRequestDto.getContent()==null){
 			return ResponseDto.fail(NOT_FOUND, "작성된 글이 없습니다.");
 		}
-		Problem problem = problemService.isPresentProblem(commentRequestDto.getPostId());
+		Problem problem = problemService.isPresentProblem(problemId);
 		if (null == problem) {
 			return ResponseDto.fail(NOT_FOUND, "존재하지 않는 게시글 id 입니다.");
 		}
@@ -94,24 +95,24 @@ public class CommentService {
 
 
 	// comment 불러오기
-//	@Transactional(readOnly = true)
-//	public ResponseDto<?> getAllComment(Long problemId) {
-//		problemRepository.findById(problemId);
-//		List<CommentAllResponseDto> commentAllList = new ArrayList<>();
-//		List<Comment> commentList = commentRepository.findAllById(problemId);
-//		for(Comment comment: commentList){
-//			commentAllList.add(
-//					CommentAllResponseDto.builder()
-//							.commentId(comment.getId())
-//							.comment(comment.getContent())
-//							.nickname(comment.getMember().getNickname())
-//							.createdAt(comment.getCreatedAt())
-//							.modifiedAt(comment.getModifiedAt())
-//							.build()
-//			);
-//		}
-//		return ResponseDto.success(commentAllList);
-//	}
+	@Transactional(readOnly = true)
+	public ResponseDto<?> getComment(Long problemId) {
+		problemRepository.findById(problemId);
+		List<CommentResponseDto> commentAllList = new ArrayList<>();
+		List<Comment> commentList = commentRepository.findAllById(problemId);
+		for(Comment comment: commentList){
+			commentAllList.add(
+					CommentResponseDto.builder()
+							.commentId(comment.getId())
+							.comment(comment.getContent())
+							.nickname(comment.getMember().getNickname())
+							.createdAt(comment.getCreatedAt())
+							.modifiedAt(comment.getModifiedAt())
+							.build()
+			);
+		}
+		return ResponseDto.success(commentList);
+	}
 
 
 
@@ -120,13 +121,11 @@ public class CommentService {
 	public ResponseDto<?> updateComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
 
 		// 토큰값이 없을 경우
-		if (null == request.getHeader("Authorization")) {
+		if(null == request.getHeader("Refresh-Token")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
-		// 존재하지 않는 problemId로 조회하는 경우
-		Problem problem = problemService.isPresentProblem(requestDto.getPostId());
-		if (null == problem){
-			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "존재하지 않는 문제입니다.");
+		if (null == request.getHeader("Authorization")) {
+			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
 		// 존재하지 않는 commentId로 조회하는 경우
 		Comment comment = isPresentComment(commentId);
@@ -152,6 +151,9 @@ public class CommentService {
 	public ResponseDto<?> deleteComment(Long commentId, HttpServletRequest request) {
 
 		// 토큰값이 없을 경우
+		if(null == request.getHeader("Refresh-Token")) {
+			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
+		}
 		if (null == request.getHeader("Authorization")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
