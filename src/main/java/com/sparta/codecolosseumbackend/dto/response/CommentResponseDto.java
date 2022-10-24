@@ -1,5 +1,6 @@
 package com.sparta.codecolosseumbackend.dto.response;
 
+import com.sparta.codecolosseumbackend.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +19,13 @@ public class CommentResponseDto {
 	private String nickname;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
+
+	public CommentResponseDto(Comment comment) {
+		this.commentId = comment.getId();
+		this.nickname = comment.getMember().getNickname();
+		this.comment = comment.getContent();
+		this.createdAt = comment.getCreatedAt();
+		this.modifiedAt = comment.getModifiedAt();
+	}
 
 }
