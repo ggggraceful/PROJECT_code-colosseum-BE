@@ -1,5 +1,6 @@
 package com.sparta.codecolosseumbackend.entity;
 
+import com.sparta.codecolosseumbackend.dto.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 public class Comment extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -28,4 +30,9 @@ public class Comment extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "problem_id")
     private Problem problem;
+
+    public void update(CommentRequestDto commentRequestDto){
+        this.content = commentRequestDto.getContent();
+    }
+
 }
