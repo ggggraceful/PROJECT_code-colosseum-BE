@@ -30,8 +30,8 @@ public class CommentController {
 
 	// comment 수정하기
 	@PutMapping("/api/auth/comment/{commentId}")
-	public ResponseDto<?> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
-		return commentService.updateComment(id, requestDto, request);
+	public ResponseDto<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, HttpServletRequest request) {
+		return commentService.updateComment(commentId, requestDto, request);
 	}
 
 	// comment 삭제하기
