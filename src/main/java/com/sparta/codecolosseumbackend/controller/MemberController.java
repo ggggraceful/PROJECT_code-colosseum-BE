@@ -1,7 +1,7 @@
 package com.sparta.codecolosseumbackend.controller;
 
 
-import com.sparta.codecolosseumbackend.dto.request.LoginRequestDto;
+import com.sparta.codecolosseumbackend.dto.request.LogInRequestDto;
 import com.sparta.codecolosseumbackend.dto.request.MemberRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
 import com.sparta.codecolosseumbackend.service.MemberService;
@@ -28,7 +28,7 @@ public class MemberController {
 
     //로그인
     @PostMapping("/api/login")
-    public ResponseDto<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
+    public ResponseDto<?> login(@RequestBody LogInRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
         return memberService.login(loginRequestDto, httpServletResponse);
     }
     //로그아웃
