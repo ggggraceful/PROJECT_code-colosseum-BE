@@ -1,0 +1,23 @@
+diff a/src/main/java/com/sparta/codecolosseumbackend/dto/request/LogInRequestDto.java b/src/main/java/com/sparta/codecolosseumbackend/dto/request/LogInRequestDto.java	(rejected hunks)
+@@ -1,21 +0,0 @@
+-package com.sparta.codecolosseumbackend.dto.request;
+-
+-import lombok.AllArgsConstructor;
+-import lombok.Getter;
+-import lombok.NoArgsConstructor;
+-
+-import javax.validation.constraints.NotBlank;
+-
+-@Getter
+-@AllArgsConstructor
+-@NoArgsConstructor
+-public class LoginRequestDto {
+-
+-    @NotBlank
+-    private String username;
+-
+-    @NotBlank
+-    private String password;
+-
+-
+-}
