@@ -26,14 +26,8 @@ public class Likes {
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
-
-
-//    public Likes(Problem problem, Member member) {
-//        this.problem = problem;
-//        this.member = member;
-//    }
-
-    public Likes(Problem problem) {
+    public Likes(Problem problem, Member member) {
         this.problem = problem;
+        this.member = member;
     }
 }

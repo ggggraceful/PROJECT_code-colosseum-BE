@@ -19,44 +19,21 @@ public class LikesService {
     private final LikesRepository likesRepository;
     private final ProblemRepository problemRepository;
 
-//    @Transactional
-//    public ResponseDto like(Member member, Long postId) {
-////        Problem problem = problemRepository.findById(postId).orElseThrow(
-////                () -> new RequestException(HttpStatus.NOT_FOUND,"해당 게시글이 존재하지 않습니다.")
-////        );
-//
-//        Problem problem = problemRepository.findById(postId).orElseThrow(
-//                () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
-//
-//        Optional<Likes> likes = likesRepository.findAllByProblemAndMember(problem, member);
-//
-//        if(likes.isPresent()) {
-//            likesRepository.deleteById(likes.get().getId());
-//            return ResponseDto.success(problem.getId() + "번 게시글에 좋아요가 취소되었습니다");
-//        } else{
-//            Likes memberLike = new Likes(problem,member);
-//            likesRepository.save(memberLike);
-//            return ResponseDto.success(problem.getId() + "번 게시글에 좋아요가 등록되었습니다");
-//        }
-//    }
-
     @Transactional
-    public ResponseDto like2(Long postId) {
-//        Problem problem = problemRepository.findById(postId).orElseThrow(
-//                () -> new RequestException(HttpStatus.NOT_FOUND,"해당 게시글이 존재하지 않습니다.")
-//        );
-
+    public ResponseDto like2(Member member, Long postId) {
         Problem problem = problemRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
 
-        Optional<Likes> likes = likesRepository.findByProblem(problem);
+        Optional<Likes> likes = likesRepository.findAllByProblemAndMember(problem, member);
 
         if(likes.isPresent()) {
             likesRepository.deleteById(likes.get().getId());
+            problem.likeNumChange(1);
             return ResponseDto.success(problem.getId() + "번 게시글에 좋아요가 취소되었습니다");
         } else{
-            Likes memberLike = new Likes(problem);
+            Likes memberLike = new Likes(problem, member);
             likesRepository.save(memberLike);
+            problem.likeNumChange(0);
             return ResponseDto.success(problem.getId() + "번 게시글에 좋아요가 등록되었습니다");
         }
     }

@@ -9,10 +9,12 @@ import com.sparta.codecolosseumbackend.entity.Problem;
 import com.sparta.codecolosseumbackend.repository.LikesRepository;
 import com.sparta.codecolosseumbackend.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +26,15 @@ public class ProblemService {
 
     // 글 작성
     public ResponseDto<?> createProblem(Member member, ProblemRequestDto requestDto) {
-        Problem problem = new Problem(member, requestDto);
-        problemRepository.save(problem);
-        return ResponseDto.success("등록 완료!");
+        try {
+            Problem problem = new Problem(member, requestDto);
+            problemRepository.save(problem);
+            return ResponseDto.success("등록 완료!");
+        } catch (NullPointerException e) {
+            System.out.println("회원이 존재하지 않습니다.");
+            return ResponseDto.fail(HttpStatus.FORBIDDEN, "등록 실패");
+        }
+
     }
 
     // 글 목록 가져오기
@@ -36,6 +44,17 @@ public class ProblemService {
         for (Problem problem : problems) {
             Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
 //            Long commentNum = (long) commentRepository.findAllByProblem(problem).size();
+            problemLists.add(new ProblemResponseDto.ProblemList(problem, likeNum));
+        }
+        return ResponseDto.success(problemLists);
+    }
+
+    // 글 목록 가져오기 (좋아요 많은 순)
+    public ResponseDto<?> findAllProblemsByLikes() {
+        List<Problem> problems = problemRepository.findAllByOrderByLikeNumDesc();
+        List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
+        for (Problem problem : problems) {
+            Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
             problemLists.add(new ProblemResponseDto.ProblemList(problem, likeNum));
         }
         return ResponseDto.success(problemLists);
@@ -52,9 +71,14 @@ public class ProblemService {
 
     // 글 수정하기
     @Transactional
-    public ResponseDto<?> updateProblem(Long problemId, ProblemRequestDto requestDto) {
+    public ResponseDto<?> updateProblem(Member member, Long problemId, ProblemRequestDto requestDto) {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
+
+        // 글의 username과 로그인 유저의 username 비교, 불일치 시 수정 불가
+        if (!member.getUsername().equals(problem.getMember().getUsername())) {
+            return ResponseDto.fail(HttpStatus.FORBIDDEN, "작성자만 수정 가능합니다.");
+        }
 
         problem.updateProblem(requestDto);
         return ResponseDto.success("수정 완료!");
@@ -62,9 +86,14 @@ public class ProblemService {
 
     // 글 삭제하기
     @Transactional
-    public ResponseDto<?> deleteProblem(Long problemId) {
+    public ResponseDto<?> deleteProblem(Member member, Long problemId) {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
+
+        // 글의 username과 로그인 유저의 username 비교, 불일치 시 삭제 불가
+        if (!member.getUsername().equals(problem.getMember().getUsername())) {
+            return ResponseDto.fail(HttpStatus.FORBIDDEN, "작성자만 삭제 가능합니다.");
+        }
 
         problemRepository.deleteById(problemId);
 
@@ -75,7 +104,7 @@ public class ProblemService {
     }
 
     // 유효성 검사 - 존재하는 문제인지 확인
-    public Problem isPresentProblem(Long id){
+    public Problem isPresentProblem(Long id) {
         Optional<Problem> optionalPost = problemRepository.findById(id);
         return optionalPost.orElse(null);
     }

@@ -20,7 +20,9 @@ public class ProblemResponseDto {
     public static class ProblemList {
         private String title;
 
-        private String username;
+        private String nickname;
+
+        private String tier;
 
         private LocalDateTime createdAt;
 
@@ -30,7 +32,8 @@ public class ProblemResponseDto {
 
         public ProblemList(Problem problem, Long likeNum) {
             this.title = problem.getTitle();
-//            this.username = problem.getMember().getUsername();
+            this.nickname = problem.getMember().getNickname();
+            this.tier = problem.getMember().getTier();
             this.createdAt = problem.getCreatedAt();
             this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
@@ -48,7 +51,9 @@ public class ProblemResponseDto {
 
         private String imgUrl;
 
-        private String username;
+        private String nickname;
+
+        private String tier;
 
         private LocalDateTime createdAt;
 
@@ -60,7 +65,8 @@ public class ProblemResponseDto {
             this.title = problem.getTitle();
             this.content = problem.getContent();
             this.imgUrl = problem.getImgUrl();
-//            this.username = problem.getMember().getUsername();
+            this.nickname = problem.getMember().getNickname();
+            this.tier = problem.getMember().getTier();
             this.createdAt = problem.getCreatedAt();
             this.modifiedAt = problem.getModifiedAt();
             this.likeNum = likeNum;
