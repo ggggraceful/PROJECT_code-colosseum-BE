@@ -28,7 +28,7 @@ public class ProblemService {
     private final CommentRepository commentRepository;
 
     // 글 작성
-    public ResponseDto<?> createProblem(Member member, ProblemRequestDto requestDto) {
+    public ResponseDto<String> createProblem(Member member, ProblemRequestDto requestDto) {
         try {
             Problem problem = new Problem(member, requestDto);
             problemRepository.save(problem);
@@ -41,7 +41,7 @@ public class ProblemService {
     }
 
     // 글 목록 가져오기
-    public ResponseDto<?> findAllProblems() {
+    public ResponseDto<List<ProblemResponseDto.ProblemList>> findAllProblems() {
         List<Problem> problems = problemRepository.findAllByOrderByModifiedAtDesc();
         List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
         for (Problem problem : problems) {
@@ -52,7 +52,7 @@ public class ProblemService {
     }
 
     // 글 목록 가져오기 (좋아요 많은 순)
-    public ResponseDto<?> findAllProblemsByLikes() {
+    public ResponseDto<List<ProblemResponseDto.ProblemList>> findAllProblemsByLikes() {
         List<Problem> problems = problemRepository.findAllByOrderByLikeNumDesc();
         List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
         for (Problem problem : problems) {
@@ -63,7 +63,7 @@ public class ProblemService {
     }
 
     // 글 하나 가져오기
-    public ResponseDto<?> findOneProblem(Long problemId) {
+    public ResponseDto<ProblemResponseDto.ProblemDetail> findOneProblem(Long problemId) {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
         Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
@@ -79,7 +79,7 @@ public class ProblemService {
 
     // 글 수정하기
     @Transactional
-    public ResponseDto<?> updateProblem(Member member, Long problemId, ProblemRequestDto requestDto) {
+    public ResponseDto<String> updateProblem(Member member, Long problemId, ProblemRequestDto requestDto) {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
 
@@ -94,7 +94,7 @@ public class ProblemService {
 
     // 글 삭제하기
     @Transactional
-    public ResponseDto<?> deleteProblem(Member member, Long problemId) {
+    public ResponseDto<String> deleteProblem(Member member, Long problemId) {
         Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
 
