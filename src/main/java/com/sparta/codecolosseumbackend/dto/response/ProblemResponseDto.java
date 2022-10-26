@@ -18,6 +18,8 @@ public class ProblemResponseDto {
     @Builder
     // 전체 목록 조회
     public static class ProblemList {
+        private Long id;
+
         private String title;
 
         private String nickname;
@@ -31,6 +33,7 @@ public class ProblemResponseDto {
         private Long likeNum;
 
         public ProblemList(Problem problem, Long likeNum) {
+            this.id = problem.getId();
             this.title = problem.getTitle();
             this.nickname = problem.getMember().getNickname();
             this.tier = problem.getMember().getTier();
@@ -45,6 +48,8 @@ public class ProblemResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ProblemDetail {
+        private Long id;
+
         private String title;
 
         private String content;
@@ -64,6 +69,7 @@ public class ProblemResponseDto {
         private List<CommentResponseDto> comments;
 
         public ProblemDetail(Problem problem, Long likeNum, List<CommentResponseDto> commentList) {
+            this.id = problem.getId();
             this.title = problem.getTitle();
             this.content = problem.getContent();
             this.imgUrl = problem.getImgUrl();
