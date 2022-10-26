@@ -107,8 +107,8 @@ public class MemberService {
 
         refreshTokenRepository.save(refreshToken);
 
-        httpServletResponse.addHeader("Access-Token", tokenDto.getGrantType() + " " + tokenDto.getAccessToken());
-        httpServletResponse.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+        httpServletResponse.addHeader("Access_Token", tokenDto.getGrantType() + " " + tokenDto.getAccessToken());
+        httpServletResponse.addHeader("Refresh_Token", tokenDto.getRefreshToken());
 
         return ResponseDto.success(
                 MemberResponseDto.builder()
