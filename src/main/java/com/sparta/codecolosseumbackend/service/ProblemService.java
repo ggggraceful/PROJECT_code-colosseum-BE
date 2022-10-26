@@ -1,5 +1,6 @@
 package com.sparta.codecolosseumbackend.service;
 
+import com.sparta.codecolosseumbackend.S3.S3Uploader;
 import com.sparta.codecolosseumbackend.dto.request.ProblemRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.CommentResponseDto;
 import com.sparta.codecolosseumbackend.dto.response.ProblemResponseDto;
@@ -14,8 +15,10 @@ import com.sparta.codecolosseumbackend.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +29,15 @@ public class ProblemService {
     private final ProblemRepository problemRepository;
     private final LikesRepository likesRepository;
     private final CommentRepository commentRepository;
+    private final S3Uploader s3Uploader;
 
     // 글 작성
-    public ResponseDto<String> createProblem(Member member, ProblemRequestDto requestDto) {
+    public ResponseDto<String> createProblem(Member member, ProblemRequestDto requestDto, MultipartFile file) throws IOException {
         try {
+            // 이미지 업로드 .upload(파일, 경로)
+            String imgPath = s3Uploader.upload(file,"images");
+            // requestDto의 imgUrl을 imgPath의 값으로 설정
+            requestDto.setImgUrl(imgPath);
             Problem problem = new Problem(member, requestDto);
             problemRepository.save(problem);
             return ResponseDto.success("등록 완료!");
@@ -70,7 +78,7 @@ public class ProblemService {
         // 글의 comment 모두 가져오기
         List<Comment> commentList = commentRepository.findAllByProblem(problem);
         List<CommentResponseDto> comments = new ArrayList<>();
-        for (Comment comment: commentList) {
+        for (Comment comment : commentList) {
             comments.add(new CommentResponseDto(comment));
         }
         ProblemResponseDto.ProblemDetail problemDetail = new ProblemResponseDto.ProblemDetail(problem, likeNum, comments);
