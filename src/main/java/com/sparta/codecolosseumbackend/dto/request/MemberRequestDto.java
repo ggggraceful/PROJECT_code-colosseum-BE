@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 public class MemberRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]{4,12}", message = "아이디양식을 확인해주세요!")
+    @Pattern(regexp = "[a-z0-9]{4,12}", message = "아이디양식을 확인해주세요!")
     private String username;
 
     @NotBlank
