@@ -11,6 +11,7 @@ import com.sparta.codecolosseumbackend.jwt.JwtProvider;
 import com.sparta.codecolosseumbackend.repository.MemberRepository;
 import com.sparta.codecolosseumbackend.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -42,18 +43,17 @@ public class MemberService {
 
     //회원가입
     @Transactional
-    public ResponseEntity<?> registerUser(MemberRequestDto memberRequestDto) {
+    public ResponseDto<?> registerUser(MemberRequestDto memberRequestDto) {
 
-//        //중복처리
-//        if(null != isPresentMember(memberRequestDto.getUsername())){
-//            throw new DuplicateMemberException();
-//        }
-//
-//        //비빌번호 확인
-//        if(!memberRequestDto.getPassword().equals(memberRequestDto.getPasswordCheck())){
-//            throw new BadPasswordConfirmException();
-////            return new ResponseEntity<>(ErrorCode.BAD_PASSWORD_COMFIRM.getMessage(), HttpStatus.CONFLICT);
-//        }
+        //중복처리
+        if(null != isPresentMember(memberRequestDto.getUsername())){
+            return ResponseDto.fail(HttpStatus.CONFLICT, "중복 아이디입니다");
+        }
+
+        //비밀번호 확인
+        if(!memberRequestDto.getPassword().equals(memberRequestDto.getPasswordCheck())){
+            return ResponseDto.fail(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다");
+        }
 
         Member member = Member.builder()
                 .username(memberRequestDto.getUsername())
@@ -62,32 +62,30 @@ public class MemberService {
                 .tier(memberRequestDto.getTier())
                 .build();
         memberRepository.save(member);
-        return ResponseEntity.ok().body(ResponseDto.success(
+        return ResponseDto.success(
                 MemberResponseDto.builder()
                         .id(member.getId())
                         .username(member.getUsername())
                         .createdAt(member.getCreatedAt())
                         .modifiedAt(member.getModifiedAt())
                         .build()
-        ));
+        );
     }
 
     //로그인
     public ResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
 
         Member member = isPresentMember(loginRequestDto.getUsername());
-//
-//        //사용자가 있는지 여부
-//        if(null == member){
-//              throw new MemberNotFoundException();
-////            return ResponseDto.fail("MEMBER_NOT_FOUND", "사용자를 찾을 수 없습니다.");
-//        }
-//
-//        //비빌번호가 맞는지 확인
-//        if(!member.validatePassword(passwordEncoder, loginRequestDto.getPassword())){
-//              throw new BadPasswordException();
-////            return ResponseDto.fail("INVALID_MEMBER", "사용자를 찾을수 없습니다.");
-//        }
+
+        //사용자가 있는지 여부
+        if(null == member){
+            return ResponseDto.fail(HttpStatus.CONFLICT, "사용자를 찾을 수 없습니다.");
+        }
+
+        //비밀번호가 맞는지 확인
+        if(!member.validatePassword(passwordEncoder, loginRequestDto.getPassword())){
+            return ResponseDto.fail(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다");
+        }
 
 
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성

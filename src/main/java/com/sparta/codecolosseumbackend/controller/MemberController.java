@@ -6,7 +6,6 @@ import com.sparta.codecolosseumbackend.dto.request.MemberRequestDto;
 import com.sparta.codecolosseumbackend.dto.response.ResponseDto;
 import com.sparta.codecolosseumbackend.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +22,7 @@ public class MemberController {
 
     //회원가입
     @PostMapping("/api/signup")
-    public ResponseEntity<?> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
+    public ResponseDto<?> signup(@RequestBody @Valid MemberRequestDto memberRequestDto) {
         return memberService.registerUser(memberRequestDto);
     }
 
