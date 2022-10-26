@@ -9,6 +9,9 @@ import com.sparta.codecolosseumbackend.service.ProblemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,8 +21,8 @@ public class ProblemController {
 
     // 글 작성
     @PostMapping("/auth/problem")
-    public ResponseDto createProblem(@AuthenticationPrincipal UserDetailImp userDetailImp, @RequestBody ProblemRequestDto requestDto) {
-        return problemService.createProblem(userDetailImp.getMember(), requestDto);
+    public ResponseDto createProblem(@AuthenticationPrincipal UserDetailImp userDetailImp, ProblemRequestDto requestDto, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        return problemService.createProblem(userDetailImp.getMember(), requestDto, file);
     }
 
     // 전체 목록 조회
