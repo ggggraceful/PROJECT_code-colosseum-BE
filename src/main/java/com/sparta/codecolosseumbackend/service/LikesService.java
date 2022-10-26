@@ -20,8 +20,8 @@ public class LikesService {
     private final ProblemRepository problemRepository;
 
     @Transactional
-    public ResponseDto like2(Member member, Long postId) {
-        Problem problem = problemRepository.findById(postId).orElseThrow(
+    public ResponseDto like2(Member member, Long problemId) {
+        Problem problem = problemRepository.findById(problemId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다"));
 
         Optional<Likes> likes = likesRepository.findAllByProblemAndMember(problem, member);
