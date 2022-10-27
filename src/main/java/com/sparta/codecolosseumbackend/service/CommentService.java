@@ -134,6 +134,10 @@ public class CommentService {
 		if (null == request.getHeader("Authorization")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
+		Member member = isPresentMember(request);
+		if(null == member){
+			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "Token이 유효하지 않습니다.");
+		}
 		// 존재하지 않는 commentId로 조회하는 경우
 		Comment comment = isPresentComment(commentId);
 		if (null == comment){
@@ -163,6 +167,10 @@ public class CommentService {
 		}
 		if (null == request.getHeader("Authorization")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
+		}
+		Member member = isPresentMember(request);
+		if(null == member){
+			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "Token이 유효하지 않습니다.");
 		}
 		// 존재하지 않는 commentId로 조회하는 경우
 		Comment comment = isPresentComment(commentId);
