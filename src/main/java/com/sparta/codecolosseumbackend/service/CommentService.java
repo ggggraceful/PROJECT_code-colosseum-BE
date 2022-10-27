@@ -114,6 +114,7 @@ public class CommentService {
 							.nickname(comment.getMember().getNickname())
 							.createdAt(comment.getCreatedAt())
 							.modifiedAt(comment.getModifiedAt())
+							.isLoading(false)
 							.build()
 			);
 		}
