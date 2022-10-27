@@ -23,7 +23,7 @@ public class CommentController {
 	}
 
 	// comment 불러오기(한문제의 comment 전부)
-	@GetMapping("/api/auth/comment/{problemId}")
+	@GetMapping("/api/comment/{problemId}")
 	public ResponseDto<?> getComment(@PathVariable Long problemId) {
 		return commentService.getComment(problemId);
 	}
