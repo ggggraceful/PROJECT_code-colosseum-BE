@@ -23,16 +23,6 @@ public class CommentResponseDto {
 	private boolean isLoading;
 	private String username;
 
-	public CommentResponseDto(Comment comment, Member member) {
-		this.commentId = comment.getId();
-		this.nickname = comment.getMember().getNickname();
-		this.comment = comment.getContent();
-		this.createdAt = comment.getCreatedAt();
-		this.modifiedAt = comment.getModifiedAt();
-		this.isLoading = comment.isLoading();
-		this.username = member.getUsername();
-	}
-
 	public CommentResponseDto(Comment comment) {
 		this.commentId = comment.getId();
 		this.nickname = comment.getMember().getNickname();
@@ -40,6 +30,7 @@ public class CommentResponseDto {
 		this.createdAt = comment.getCreatedAt();
 		this.modifiedAt = comment.getModifiedAt();
 		this.isLoading = comment.isLoading();
+		this.username = comment.getMember().getUsername();
 	}
 
 }

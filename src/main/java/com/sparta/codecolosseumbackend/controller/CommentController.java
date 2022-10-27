@@ -24,8 +24,8 @@ public class CommentController {
 
 	// comment 불러오기(한문제의 comment 전부)
 	@GetMapping("/api/comment/{problemId}")
-	public ResponseDto<?> getComment(@PathVariable Long problemId, HttpServletRequest request) {
-		return commentService.getComment(problemId, request);
+	public ResponseDto<?> getComment(@PathVariable Long problemId) {
+		return commentService.getComment(problemId);
 	}
 
 	// comment 수정하기
