@@ -39,7 +39,7 @@ public class CommentService {
 
 	// 유효성 검사 - 존재하는 멤버인지 확인
 	private Member isPresentMember(HttpServletRequest request) {
-		if (!jwtProvider.validateToken(request.getHeader("Refresh-Token"))) {
+		if (!jwtProvider.validateToken(request.getHeader("Refresh_Token"))) {
 			return null;
 		}
 		return jwtProvider.getMemberFromAuthentication();
@@ -58,7 +58,7 @@ public class CommentService {
 	@Transactional
 	public ResponseDto<?> createComment(Long problemId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
 
-		if(null == request.getHeader("Refresh-Token")) {
+		if(null == request.getHeader("Refresh_Token")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
 		if (null == request.getHeader("Authorization")) {
@@ -128,7 +128,7 @@ public class CommentService {
 	public ResponseDto<?> updateComment(Long commentId, CommentRequestDto requestDto, HttpServletRequest request) {
 
 		// 토큰값이 없을 경우
-		if(null == request.getHeader("Refresh-Token")) {
+		if(null == request.getHeader("Refresh_Token")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
 		if (null == request.getHeader("Authorization")) {
@@ -158,7 +158,7 @@ public class CommentService {
 	public ResponseDto<?> deleteComment(Long commentId, HttpServletRequest request) {
 
 		// 토큰값이 없을 경우
-		if(null == request.getHeader("Refresh-Token")) {
+		if(null == request.getHeader("Refresh_Token")) {
 			return ResponseDto.fail(NOT_FOUND, "로그인이 필요합니다.");
 		}
 		if (null == request.getHeader("Authorization")) {
