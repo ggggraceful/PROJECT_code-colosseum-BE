@@ -19,6 +19,7 @@ public class CommentResponseDto {
 	private String nickname;
 	private LocalDateTime createdAt;
 	private LocalDateTime modifiedAt;
+	private boolean isLoading;
 
 	public CommentResponseDto(Comment comment) {
 		this.commentId = comment.getId();
@@ -26,6 +27,7 @@ public class CommentResponseDto {
 		this.comment = comment.getContent();
 		this.createdAt = comment.getCreatedAt();
 		this.modifiedAt = comment.getModifiedAt();
+		this.isLoading = comment.isLoading();
 	}
 
 }
