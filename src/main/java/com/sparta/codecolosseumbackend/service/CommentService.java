@@ -89,6 +89,7 @@ public class CommentService {
 						.nickname(comment.getMember().getNickname())
 						.createdAt(comment.getCreatedAt())
 						.modifiedAt(comment.getModifiedAt())
+						.username(member.getUsername())
 						.build()
 			);
 	}
@@ -96,11 +97,16 @@ public class CommentService {
 
 	// comment 불러오기
 	@Transactional(readOnly = true)
-	public ResponseDto<?> getComment(Long problemId) {
+	public ResponseDto<?> getComment(Long problemId, HttpServletRequest request) {
 
 		Problem problem = problemService.isPresentProblem(problemId);
 		if (null == problem) {
 			return ResponseDto.fail(NOT_FOUND, "존재하지 않는 게시글입니다.");
+		}
+
+		Member member = isPresentMember(request);
+		if(null == member){
+			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "Token이 유효하지 않습니다.");
 		}
 
 		problemRepository.findById(problemId);
@@ -115,6 +121,7 @@ public class CommentService {
 							.createdAt(comment.getCreatedAt())
 							.modifiedAt(comment.getModifiedAt())
 							.isLoading(false)
+							.username(member.getUsername())
 							.build()
 			);
 		}
