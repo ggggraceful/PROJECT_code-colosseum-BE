@@ -143,17 +143,19 @@ public class CommentService {
 		if (null == comment){
 			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
 		}
-
-		comment.update(requestDto);
-		return ResponseDto.success(
-				CommentResponseDto.builder()
-						.commentId(comment.getId())
-						.comment(comment.getContent())
-						.nickname(comment.getMember().getUsername())
-						.modifiedAt(comment.getModifiedAt())
-						.build()
-		);
-
+		if(member.getUsername().equals(comment.getMember().getUsername())) {
+			comment.update(requestDto);
+			return ResponseDto.success(
+					CommentResponseDto.builder()
+							.commentId(comment.getId())
+							.comment(comment.getContent())
+							.nickname(comment.getMember().getUsername())
+							.modifiedAt(comment.getModifiedAt())
+							.build()
+			);
+		} else {
+			return ResponseDto.fail(HttpStatus.FORBIDDEN, "작성자만 수정할 수 있습니다");
+		}
 	}
 
 
@@ -177,9 +179,12 @@ public class CommentService {
 		if (null == comment){
 			return ResponseDto.fail(HttpStatus.BAD_REQUEST, "존재하지 않는 댓글입니다.");
 		}
-
-		commentRepository.delete(comment);
-		return ResponseDto.success("success");
+		if(member.getUsername().equals(comment.getMember().getUsername())) {
+			commentRepository.delete(comment);
+			return ResponseDto.success("success");
+		} else {
+			return ResponseDto.fail(HttpStatus.FORBIDDEN, "작성자만 삭제할 수 있습니다");
+		}
 	}
 
 
