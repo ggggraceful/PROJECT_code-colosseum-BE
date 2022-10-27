@@ -50,7 +50,7 @@ public class ProblemService {
 
     // 글 목록 가져오기
     public ResponseDto<List<ProblemResponseDto.ProblemList>> findAllProblems() {
-        List<Problem> problems = problemRepository.findAllByOrderByModifiedAtDesc();
+        List<Problem> problems = problemRepository.findAllByOrderByCreatedAtDesc();
         List<ProblemResponseDto.ProblemList> problemLists = new ArrayList<>();
         for (Problem problem : problems) {
             Long likeNum = (long) likesRepository.findAllByProblem(problem).size();
